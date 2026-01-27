@@ -38,7 +38,7 @@ export default function Home() {
 
       setResult(finalResult);
       setIsFlipping(false);
-    }, 2000);
+    }, 2500);
   };
 
   const resetCoin = () => {
@@ -48,40 +48,92 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
       <div className="text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-8 text-red-600">
-          🐴 马年抛硬币 🐴
+        <h1 className="text-4xl md:text-6xl font-bold mb-8 text-white drop-shadow-lg">
+          🪙 抛硬币来决定吧！✨
         </h1>
 
-        <div className="relative w-64 h-64 mx-auto mb-8">
+        <div className="relative w-64 h-64 mx-auto mb-8" style={{ perspective: "1000px" }}>
           {showCoin && (
             <div
-              className={`absolute inset-0 flex items-center justify-center transition-all duration-2000 ${
-                isFlipping ? "animate-flip" : ""
-              } ${result === "standing" ? "animate-wobble" : ""}`}
+              className={`coin-container ${
+                isFlipping ? "flipping" : ""
+              } ${result === "standing" ? "standing" : ""}`}
+              style={{
+                transformStyle: "preserve-3d",
+                position: "relative",
+                width: "200px",
+                height: "200px",
+                margin: "0 auto",
+              }}
             >
+              {/* 硬币正面 */}
               <div
-                className={`w-48 h-48 rounded-full shadow-2xl flex items-center justify-center text-6xl font-bold transition-all duration-500 ${
-                  result === "standing"
-                    ? "bg-gradient-to-r from-yellow-400 to-yellow-600 transform rotate-90 w-12"
-                    : result === "heads" || (!result && !isFlipping)
-                    ? "bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600"
-                    : "bg-gradient-to-br from-red-500 via-red-600 to-red-700"
-                }`}
+                className="coin-face coin-front"
                 style={{
-                  border: "4px solid #d97706",
-                  boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  backfaceVisibility: "hidden",
+                  borderRadius: "50%",
+                  background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
+                  boxShadow: `
+                    inset -10px -10px 20px rgba(0,0,0,0.2),
+                    inset 10px 10px 20px rgba(255,255,255,0.3),
+                    0 20px 40px rgba(0,0,0,0.3)
+                  `,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "4px solid #B8860B",
                 }}
               >
-                {result === "standing" ? (
-                  <span className="text-2xl transform -rotate-90">🐴</span>
-                ) : result === "heads" || (!result && !isFlipping) ? (
-                  <span>🐴</span>
-                ) : result === "tails" ? (
-                  <span>福</span>
-                ) : null}
+                <div className="text-6xl mb-2">⭐</div>
+                <div className="text-2xl font-bold text-white drop-shadow-md">YES</div>
               </div>
+
+              {/* 硬币反面 */}
+              <div
+                className="coin-face coin-back"
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  backfaceVisibility: "hidden",
+                  transform: "rotateY(180deg)",
+                  borderRadius: "50%",
+                  background: "linear-gradient(135deg, #E8E8E8 0%, #B0B0B0 100%)",
+                  boxShadow: `
+                    inset -10px -10px 20px rgba(0,0,0,0.2),
+                    inset 10px 10px 20px rgba(255,255,255,0.3),
+                    0 20px 40px rgba(0,0,0,0.3)
+                  `,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "4px solid #808080",
+                }}
+              >
+                <div className="text-6xl mb-2">🌙</div>
+                <div className="text-2xl font-bold text-gray-700 drop-shadow-md">NO</div>
+              </div>
+
+              {/* 硬币边缘（厚度效果） */}
+              <div
+                className="coin-edge"
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  background: "linear-gradient(90deg, #B8860B 0%, #FFD700 25%, #B8860B 50%, #FFD700 75%, #B8860B 100%)",
+                  transform: "translateZ(-10px)",
+                  border: "4px solid #B8860B",
+                }}
+              />
             </div>
           )}
 
@@ -89,7 +141,7 @@ export default function Home() {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center animate-fade-in">
                 <div className="text-6xl mb-4">🕳️</div>
-                <p className="text-xl text-gray-600">硬币滚进下水道了...</p>
+                <p className="text-xl text-white drop-shadow-md">哎呀！硬币滚走了...</p>
               </div>
             </div>
           )}
@@ -98,16 +150,24 @@ export default function Home() {
         {result && (
           <div className="mb-6 text-2xl font-bold animate-fade-in">
             {result === "heads" && (
-              <p className="text-yellow-600">🎉 正面 - 马到成功！</p>
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl">
+                <p className="text-yellow-500">⭐ 正面 - 就这么决定啦！</p>
+              </div>
             )}
             {result === "tails" && (
-              <p className="text-red-600">🎊 反面 - 福星高照！</p>
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl">
+                <p className="text-gray-600">🌙 反面 - 换个方向试试？</p>
+              </div>
             )}
             {result === "standing" && (
-              <p className="text-orange-600">✨ 硬币立住了！一马当先！</p>
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl">
+                <p className="text-pink-500">🎪 哇！硬币立住了！你太幸运了！</p>
+              </div>
             )}
             {result === "disappeared" && (
-              <p className="text-gray-600">💫 硬币消失了...</p>
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl">
+                <p className="text-gray-500">💫 硬币消失了...</p>
+              </div>
             )}
           </div>
         )}
@@ -116,49 +176,62 @@ export default function Home() {
           <button
             onClick={flipCoin}
             disabled={isFlipping}
-            className={`px-8 py-4 rounded-full text-xl font-bold text-white transition-all transform hover:scale-105 ${
+            className={`px-8 py-4 rounded-full text-xl font-bold text-white transition-all transform ${
               isFlipping
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 shadow-lg"
+                : "bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-lg hover:shadow-pink-500/50 hover:scale-105 hover:-translate-y-1 active:scale-100 active:translate-y-0"
             }`}
+            style={{
+              boxShadow: isFlipping ? "" : "0 8px 20px rgba(236, 72, 153, 0.4)",
+            }}
           >
-            {isFlipping ? "抛硬币中..." : "抛硬币"}
+            {isFlipping ? "硬币飞起来啦~ ✨" : "让命运决定 🎲"}
           </button>
 
           {result && (
             <button
               onClick={resetCoin}
-              className="px-8 py-4 rounded-full text-xl font-bold text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 shadow-lg transition-all transform hover:scale-105"
+              className="px-8 py-4 rounded-full text-xl font-bold text-white bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 shadow-lg hover:shadow-blue-500/50 transition-all transform hover:scale-105 hover:-translate-y-1 active:scale-100 active:translate-y-0"
+              style={{
+                boxShadow: "0 8px 20px rgba(59, 130, 246, 0.4)",
+              }}
             >
-              再来一次
+              再试一次 🔄
             </button>
           )}
         </div>
 
-        <div className="mt-12 text-sm text-gray-500 space-y-1">
-          <p>💡 小提示：</p>
-          <p>正面/反面各 47% 概率</p>
-          <p>硬币立住 5% 概率</p>
-          <p>硬币消失 1% 概率</p>
+        <div className="mt-12 text-sm text-white/90 space-y-1 bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4">
+          <p className="font-bold text-base mb-2">🎯 概率说明：</p>
+          <p>⭐ 正面 47% - 就这么办！</p>
+          <p>🌙 反面 47% - 换个想法</p>
+          <p>🎪 立住 5% - 超级幸运</p>
+          <p>🕳️ 消失 1% - 命运的玩笑</p>
         </div>
       </div>
 
       <style jsx>{`
-        @keyframes flip {
+        @keyframes coinFlip {
           0% {
-            transform: rotateY(0deg) rotateX(0deg);
+            transform: translateY(0) rotateY(0deg) rotateX(0deg);
           }
-          25% {
-            transform: rotateY(180deg) rotateX(180deg) translateY(-50px);
+          20% {
+            transform: translateY(-150px) rotateY(360deg) rotateX(180deg) scale(1.1);
           }
-          50% {
-            transform: rotateY(360deg) rotateX(360deg) translateY(-80px);
+          40% {
+            transform: translateY(-180px) rotateY(720deg) rotateX(360deg) scale(1.15);
           }
-          75% {
-            transform: rotateY(540deg) rotateX(540deg) translateY(-50px);
+          60% {
+            transform: translateY(-150px) rotateY(1080deg) rotateX(540deg) scale(1.1);
+          }
+          85% {
+            transform: translateY(0) rotateY(1440deg) rotateX(720deg) scale(1);
+          }
+          92% {
+            transform: translateY(-20px) rotateY(1440deg) rotateX(720deg) scale(1.05);
           }
           100% {
-            transform: rotateY(720deg) rotateX(720deg) translateY(0);
+            transform: translateY(0) rotateY(1440deg) rotateX(720deg) scale(1);
           }
         }
 
@@ -181,24 +254,37 @@ export default function Home() {
         @keyframes fade-in {
           from {
             opacity: 0;
-            transform: scale(0.8);
+            transform: translateY(30px) scale(0.9);
           }
           to {
             opacity: 1;
-            transform: scale(1);
+            transform: translateY(0) scale(1);
           }
         }
 
-        .animate-flip {
-          animation: flip 2s ease-in-out;
+        .coin-container.flipping {
+          animation: coinFlip 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .animate-wobble {
+        .coin-container.standing {
+          transform: rotate(90deg);
+          width: 12px !important;
+        }
+
+        .coin-container.standing .coin-face {
           animation: wobble 0.5s ease-in-out infinite;
         }
 
         .animate-fade-in {
           animation: fade-in 0.5s ease-out;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+          .coin-container {
+            width: 150px !important;
+            height: 150px !important;
+          }
         }
       `}</style>
     </div>
