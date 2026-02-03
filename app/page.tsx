@@ -8,6 +8,8 @@ export default function Home() {
   const [isFlipping, setIsFlipping] = useState(false);
   const [result, setResult] = useState<CoinResult | null>(null);
   const [showCoin, setShowCoin] = useState(true);
+  const [headsText, setHeadsText] = useState("YES");
+  const [tailsText, setTailsText] = useState("NO");
 
   const flipCoin = () => {
     if (isFlipping) return;
@@ -49,10 +51,45 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
-      <div className="text-center">
+      <div className="text-center max-w-2xl w-full">
         <h1 className="text-4xl md:text-6xl font-bold mb-8 text-white drop-shadow-lg">
-          抛硬币来决定吧！🪙 
+          抛硬币来决定吧！🪙
         </h1>
+
+        {/* 自定义输入框 */}
+        <div className="mb-8 bg-white/20 backdrop-blur-md rounded-2xl p-6 shadow-xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-white text-sm font-bold mb-2">
+                ⭐ 正面结果
+              </label>
+              <input
+                type="text"
+                value={headsText}
+                onChange={(e) => setHeadsText(e.target.value)}
+                placeholder="输入正面文字"
+                maxLength={10}
+                className="w-full px-4 py-3 rounded-xl bg-white/90 backdrop-blur-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+              />
+            </div>
+            <div>
+              <label className="block text-white text-sm font-bold mb-2">
+                ⚪ 反面结果
+              </label>
+              <input
+                type="text"
+                value={tailsText}
+                onChange={(e) => setTailsText(e.target.value)}
+                placeholder="输入反面文字"
+                maxLength={10}
+                className="w-full px-4 py-3 rounded-xl bg-white/90 backdrop-blur-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all"
+              />
+            </div>
+          </div>
+          <p className="text-white/80 text-xs mt-3">
+            💡 提示：自定义你的选择，让硬币帮你做决定！
+          </p>
+        </div>
 
         <div className="relative w-64 h-64 mx-auto mb-8" style={{ perspective: "1000px" }}>
           {showCoin && (
@@ -95,7 +132,9 @@ export default function Home() {
                 }}
               >
                 <div className="text-6xl mb-2">⭐</div>
-                <div className="text-2xl font-bold text-white drop-shadow-md">YES</div>
+                <div className="text-2xl font-bold text-white drop-shadow-md break-words px-2">
+                  {headsText || "YES"}
+                </div>
               </div>
 
               {/* 硬币反面 - 光滑的硬币 */}
@@ -164,12 +203,14 @@ export default function Home() {
           <div className="mb-6 text-2xl font-bold animate-fade-in">
             {result === "heads" && (
               <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl">
-                <p className="text-yellow-500">⭐ 正面 - 就这么决定啦！</p>
+                <p className="text-yellow-500">⭐ 正面 - {headsText || "YES"}</p>
+                <p className="text-sm text-gray-500 mt-1">就这么决定啦！</p>
               </div>
             )}
             {result === "tails" && (
               <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl">
-                <p className="text-gray-600">⚪ 反面 - 就这么决定啦！</p>
+                <p className="text-gray-600">⚪ 反面 - {tailsText || "NO"}</p>
+                <p className="text-sm text-gray-500 mt-1">就这么决定啦！</p>
               </div>
             )}
             {result === "standing" && (
@@ -185,7 +226,7 @@ export default function Home() {
           </div>
         )}
 
-        <div className="flex gap-4 justify-center">
+        <div className="flex flex-col gap-4 items-center">
           <button
             onClick={flipCoin}
             disabled={isFlipping}
@@ -200,6 +241,20 @@ export default function Home() {
           >
             {isFlipping ? "硬币飞起来啦~ ✨" : "让命运决定 🎲"}
           </button>
+
+          {/* 小红书主页按钮 */}
+          <a
+            href="https://xhslink.com/m/1ZZ7GicPCV0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 rounded-full text-base font-bold text-white bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-red-500/50 transition-all transform hover:scale-105 hover:-translate-y-1 active:scale-100 active:translate-y-0 flex items-center gap-2"
+            style={{
+              boxShadow: "0 8px 20px rgba(239, 68, 68, 0.4)",
+            }}
+          >
+            <span>📕</span>
+            <span>关注我的小红书</span>
+          </a>
         </div>
 
         <div className="mt-12 text-sm text-white/90 space-y-1 bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4">
