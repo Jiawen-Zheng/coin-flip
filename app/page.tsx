@@ -51,7 +51,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
       <div className="text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-8 text-white drop-shadow-lg">
-          🪙 抛硬币来决定吧！✨
+          抛硬币来决定吧！🪙 
         </h1>
 
         <div className="relative w-64 h-64 mx-auto mb-8" style={{ perspective: "1000px" }}>
@@ -66,6 +66,10 @@ export default function Home() {
                 width: "200px",
                 height: "200px",
                 margin: "0 auto",
+                transform: !isFlipping && result === "tails" ? "rotateY(180deg)" :
+                          !isFlipping && result === "heads" ? "rotateY(0deg)" :
+                          undefined,
+                transition: !isFlipping ? "transform 0.6s ease-out" : "none",
               }}
             >
               {/* 硬币正面 */}
@@ -94,7 +98,7 @@ export default function Home() {
                 <div className="text-2xl font-bold text-white drop-shadow-md">YES</div>
               </div>
 
-              {/* 硬币反面 */}
+              {/* 硬币反面 - 光滑的硬币 */}
               <div
                 className="coin-face coin-back"
                 style={{
@@ -104,21 +108,30 @@ export default function Home() {
                   backfaceVisibility: "hidden",
                   transform: "rotateY(180deg)",
                   borderRadius: "50%",
-                  background: "linear-gradient(135deg, #E8E8E8 0%, #B0B0B0 100%)",
+                  background: "radial-gradient(circle at 30% 30%, #F5F5F5 0%, #D3D3D3 40%, #A8A8A8 100%)",
                   boxShadow: `
-                    inset -10px -10px 20px rgba(0,0,0,0.2),
-                    inset 10px 10px 20px rgba(255,255,255,0.3),
+                    inset -15px -15px 30px rgba(0,0,0,0.3),
+                    inset 15px 15px 30px rgba(255,255,255,0.5),
                     0 20px 40px rgba(0,0,0,0.3)
                   `,
                   display: "flex",
-                  flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  border: "4px solid #808080",
+                  border: "4px solid #909090",
                 }}
               >
-                <div className="text-6xl mb-2">🌙</div>
-                <div className="text-2xl font-bold text-gray-700 drop-shadow-md">NO</div>
+                {/* 光滑表面的高光效果 */}
+                <div
+                  style={{
+                    position: "absolute",
+                    width: "60%",
+                    height: "60%",
+                    borderRadius: "50%",
+                    background: "radial-gradient(circle at 40% 40%, rgba(255,255,255,0.4) 0%, transparent 70%)",
+                    top: "10%",
+                    left: "10%",
+                  }}
+                />
               </div>
 
               {/* 硬币边缘（厚度效果） */}
@@ -156,7 +169,7 @@ export default function Home() {
             )}
             {result === "tails" && (
               <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl">
-                <p className="text-gray-600">🌙 反面 - 换个方向试试？</p>
+                <p className="text-gray-600">⚪ 反面 - 就这么决定啦！</p>
               </div>
             )}
             {result === "standing" && (
@@ -187,24 +200,12 @@ export default function Home() {
           >
             {isFlipping ? "硬币飞起来啦~ ✨" : "让命运决定 🎲"}
           </button>
-
-          {result && (
-            <button
-              onClick={resetCoin}
-              className="px-8 py-4 rounded-full text-xl font-bold text-white bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 shadow-lg hover:shadow-blue-500/50 transition-all transform hover:scale-105 hover:-translate-y-1 active:scale-100 active:translate-y-0"
-              style={{
-                boxShadow: "0 8px 20px rgba(59, 130, 246, 0.4)",
-              }}
-            >
-              再试一次 🔄
-            </button>
-          )}
         </div>
 
         <div className="mt-12 text-sm text-white/90 space-y-1 bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4">
           <p className="font-bold text-base mb-2">🎯 概率说明：</p>
           <p>⭐ 正面 47% - 就这么办！</p>
-          <p>🌙 反面 47% - 换个想法</p>
+          <p>⚪ 反面 47% - 换个想法</p>
           <p>🎪 立住 5% - 超级幸运</p>
           <p>🕳️ 消失 1% - 命运的玩笑</p>
         </div>
@@ -231,7 +232,7 @@ export default function Home() {
             transform: translateY(-20px) rotateY(1440deg) rotateX(720deg) scale(1.05);
           }
           100% {
-            transform: translateY(0) rotateY(1440deg) rotateX(720deg) scale(1);
+            transform: translateY(0) rotateY(0deg) rotateX(0deg) scale(1);
           }
         }
 
@@ -264,6 +265,14 @@ export default function Home() {
 
         .coin-container.flipping {
           animation: coinFlip 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .coin-container:not(.flipping).show-heads {
+          transform: rotateY(0deg);
+        }
+
+        .coin-container:not(.flipping).show-tails {
+          transform: rotateY(180deg);
         }
 
         .coin-container.standing {
