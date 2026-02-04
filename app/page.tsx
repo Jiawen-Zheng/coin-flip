@@ -521,7 +521,7 @@ export default function Home() {
       {/* 底部链接 */}
       <div className="w-full py-6 flex justify-center">
         <a
-          href="https://xhslink.com/m/1ZZ7GicPCV0"
+          href="https://xhslink.com/m/9uUK2MTrk3v"
           target="_blank"
           rel="noopener noreferrer"
           className="px-6 py-3 rounded-full text-base font-bold text-white bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-red-500/50 transition-all transform hover:scale-105 hover:-translate-y-1 active:scale-100 active:translate-y-0 flex items-center gap-2"
