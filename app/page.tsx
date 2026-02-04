@@ -115,8 +115,8 @@ export default function Home() {
       <div className="w-full bg-white/10 backdrop-blur-md shadow-lg">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4">
-            <h1 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">
-              🎲 决策助手
+            <h1 className="text-xl md:text-2xl font-bold text-white drop-shadow-lg">
+               决策小助手
             </h1>
             <div className="flex gap-2 bg-white/20 rounded-full p-1">
               <button
